@@ -276,21 +276,6 @@
             display: block;
         }
 
-        .video-slot {
-            aspect-ratio: 16/9;
-            background: rgba(255,255,255,0.03);
-            border: 2px dashed rgba(255,92,0,0.25);
-            border-radius: 12px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .video-slot:hover { border-color: var(--orange); background: rgba(255,92,0,0.03); }
-        .video-slot svg { width: 64px; height: 64px; stroke: var(--orange); fill: none; stroke-width: 1.5; margin-bottom: 1rem; opacity: 0.6; }
-        .video-slot p { font-family: 'Barlow', sans-serif; color: var(--dust); font-size: 0.95rem; opacity: 0.7; }
-        .video-slot-hint { font-size: 0.8rem !important; margin-top: 0.3rem; }
-
         /* ── GALLERY ── */
         .gallery-section { padding: 3rem 1.5rem 5rem; max-width: 1000px; margin: 0 auto; }
 
@@ -486,27 +471,28 @@
     <section class="video-section" id="video">
         <h2 class="section-title reveal">Video</h2>
 
-        <!-- VIDEO FACEBOOK 1 -->
+        <!-- VIDEO YOUTUBE 1 -->
         <div class="reveal">
             <div class="video-wrapper">
-                <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Froberta.lazzari3%2Fvideos%2F1305894530872030%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true">
-    
+                <iframe src="https://www.youtube.com/embed/c90r5w-BTtk"
+                        frameborder="0" allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
                 </iframe>
             </div>
         </div>
 
-        <!-- VIDEO FACEBOOK 2 -->
+        <!-- VIDEO YOUTUBE 2 -->
         <div class="reveal">
             <div class="video-wrapper">
-                <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Froberta.lazzari3%2Fvideos%2F960171010333783%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true">
+                <iframe src="https://www.youtube.com/embed/KRh0V_osBfQ"
+                        frameborder="0" allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
                 </iframe>
             </div>
         </div>
 
-        <!-- Per aggiungere altri video:
-             FACEBOOK: copia un blocco video-wrapper e cambia il link dopo href=
-             YOUTUBE:  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/ID_VIDEO" frameborder="0" allowfullscreen></iframe></div>
-        -->
+        <!-- Per aggiungere altri video YouTube: copia un blocco video-wrapper
+             e cambia l'ID dopo /embed/ (l'ID è la parte dopo youtu.be/ nel link) -->
     </section>
 
     <div class="divider"></div>
