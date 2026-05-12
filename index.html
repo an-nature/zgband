@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZG Band — Blues Rock dal Delta del Po</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --orange: #FF5C00;
+            --amber: #FF8C00;
+            --deep-black: #0A0A0A;
+            --warm-black: #141210;
+            --brown: #2A1F14;
+            --cream: #F5E6D0;
+            --dust: #C4A882;
+            --blue-accent: #4AC8E0;
+            --purple: #7B3FA0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--deep-black);
+            color: var(--cream);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ── HERO SECTION ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(255, 92, 0, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(123, 63, 160, 0.1) 0%, transparent 50%),
+                var(--deep-black);
+            z-index: 0;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            z-index: 1;
+            width: min(500px, 85vw);
+            margin-bottom: 2rem;
+            animation: fadeUp 1.2s ease-out;
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow:
+                0 0 60px rgba(255, 92, 0, 0.2),
+                0 20px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-image-frame {
+            position: absolute;
+            inset: -12px;
+            border: 2px solid var(--orange);
+            border-radius: 12px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .band-name {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            animation: fadeUp 1s ease-out 0.3s both;
+            text-shadow:
+                0 0 40px rgba(255, 92, 0, 0.4),
+                0 4px 0 #B33F00;
+        }
+
+        .band-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--dust);
+            letter-spacing: 0.15em;
+            text-align: center;
+            z-index: 1;
+            margin-top: 0.5rem;
+            animation: fadeUp 1s ease-out 0.6s both;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            z-index: 2;
+            animation: bounce 2s ease-in-out infinite 2s;
+            opacity: 0.5;
+        }
+
+        .scroll-hint svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--dust);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--orange), var(--purple), transparent);
+            opacity: 0.5;
+        }
+
+        /* ── BIO SECTION ── */
+        .bio {
+            padding: 6rem 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .bio-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+            line-height: 1.9;
+            color: var(--cream);
+            opacity: 0;
+            animation: fadeUp 1s ease-out forwards;
+            animation-timeline: view();
+            animation-range: entry 0% entry 40%;
+        }
+
+        .bio-text em {
+            color: var(--orange);
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        .bio-quote {
+            margin-top: 2.5rem;
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(196, 168, 130, 0.2);
+            border-bottom: 1px solid rgba(196, 168, 130, 0.2);
+        }
+
+        .bio-quote p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--dust);
+            line-height: 1.8;
+        }
+
+        /* ── MEMBERS ── */
+        .members {
+            padding: 2rem 1.5rem 5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .members-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .member-card {
+            background: linear-gradient(135deg, rgba(255, 92, 0, 0.08), rgba(123, 63, 160, 0.05));
+            border: 1px solid rgba(255, 92, 0, 0.15);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .member-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 92, 0, 0.15);
+        }
+
+        .member-name {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.1rem;
+            color: var(--cream);
+            margin-bottom: 0.3rem;
+        }
+
+        .member-role {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            font-size: 0.9rem;
+            color: var(--dust);
+            text-transform: lowercase;
+            letter-spacing: 0.08em;
+        }
+
+        .member-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        /* ── EVENTS SECTION ── */
+        .events {
+            background: linear-gradient(180deg, var(--deep-black), var(--warm-black), var(--brown));
+            padding: 5rem 1.5rem;
+        }
+
+        .events-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .events-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .event-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            background: rgba(255, 92, 0, 0.04);
+            border: 1px solid rgba(255, 92, 0, 0.12);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .event-card:hover {
+            border-color: var(--orange);
+            box-shadow: 0 0 50px rgba(255, 92, 0, 0.1);
+        }
+
+        .event-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-date {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: var(--amber);
+        }
+
+        .event-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            color: var(--cream);
+            line-height: 1.3;
+        }
+
+        .event-location {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            color: var(--dust);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-location svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--orange);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+
+        .event-time {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 600;
+            color: var(--blue-accent);
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── VIDEO SECTION ── */
+        .video-section {
+            padding: 5rem 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .video-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .video-slot {
+            aspect-ratio: 16/9;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255, 92, 0, 0.25);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .video-slot:hover {
+            border-color: var(--orange);
+            background: rgba(255, 92, 0, 0.03);
+        }
+
+        .video-slot svg {
+            width: 64px;
+            height: 64px;
+            stroke: var(--orange);
+            fill: none;
+            stroke-width: 1.5;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .video-slot p {
+            font-family: 'Barlow', sans-serif;
+            color: var(--dust);
+            font-size: 0.95rem;
+            opacity: 0.7;
+        }
+
+        .video-slot-hint {
+            font-size: 0.8rem !important;
+            margin-top: 0.3rem;
+        }
+
+        /* ── GALLERY SECTION ── */
+        .gallery-section {
+            padding: 3rem 1.5rem 5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-slot {
+            aspect-ratio: 4/3;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255, 92, 0, 0.2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-slot:hover {
+            border-color: var(--orange);
+        }
+
+        .gallery-slot svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--dust);
+            fill: none;
+            stroke-width: 1.5;
+            opacity: 0.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-slot p {
+            font-family: 'Barlow', sans-serif;
+            color: var(--dust);
+            font-size: 0.85rem;
+            opacity: 0.5;
+        }
+
+        /* ── CONTATTI ── */
+        .contatti {
+            padding: 4rem 1.5rem;
+            text-align: center;
+            background: var(--warm-black);
+            border-top: 1px solid rgba(255, 92, 0, 0.1);
+        }
+
+        .contatti-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.5rem;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .contatti p {
+            font-family: 'Barlow', sans-serif;
+            color: var(--dust);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .contatti a {
+            color: var(--orange);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .contatti a:hover {
+            border-bottom-color: var(--orange);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(255, 92, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--orange);
+            border-color: var(--orange);
+        }
+
+        .social-links a svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--cream);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(196, 168, 130, 0.3);
+            background: var(--deep-black);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* ── SCROLL ANIMATIONS ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .event-card {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════ HERO ═══════ -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-image-wrapper">
+            <img src="images/zg-band.jpg" alt="ZG Band — Blues Rock">
+            <div class="hero-image-frame"></div>
+        </div>
+        <h1 class="band-name">ZG Band</h1>
+        <p class="band-subtitle">Blues Rock dal Delta del Po</p>
+        <div class="scroll-hint">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════ BIO ═══════ -->
+    <section class="bio reveal">
+        <div class="bio-quote">
+            <p>
+                Tra riff taglienti, groove profondi e vibrazioni d'altri tempi,
+                portiamo sul palco un suono <em>autentico</em>, caldo e senza freni.
+            </p>
+        </div>
+        <br>
+        <p class="bio-text" style="opacity: 1;">
+            Dal Delta del Po al richiamo del Mississippi, il nostro
+            blues rock scorre dove c'è <em>terra</em>, <em>fiume</em> e <em>anima</em>.
+        </p>
+    </section>
+
+    <!-- ═══════ MEMBERS ═══════ -->
+    <section class="members reveal">
+        <h2 class="members-title">Noi siamo ZG Band</h2>
+        <div class="members-grid">
+            <div class="member-card">
+                <span class="member-icon">🎸</span>
+                <div class="member-name">Valerio ZG</div>
+                <div class="member-role">chitarra</div>
+            </div>
+            <div class="member-card">
+                <span class="member-icon">🎸</span>
+                <div class="member-name">Giorgio Merchiori</div>
+                <div class="member-role">chitarra</div>
+            </div>
+            <div class="member-card">
+                <span class="member-icon">🎸</span>
+                <div class="member-name">Gianfranco Grandi</div>
+                <div class="member-role">chitarra</div>
+            </div>
+            <div class="member-card">
+                <span class="member-icon">🎵</span>
+                <div class="member-name">Michele Andreotti</div>
+                <div class="member-role">basso</div>
+            </div>
+            <div class="member-card">
+                <span class="member-icon">🥁</span>
+                <div class="member-name">Riccardo Rubini</div>
+                <div class="member-role">batteria</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════ EVENTI ═══════ -->
+    <section class="events" id="eventi">
+        <div class="events-inner reveal">
+            <h2 class="events-title">Prossimi Eventi</h2>
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="images/sagra-anguilla.jpg" alt="Festa dell'Anguilla con ZG Band">
+                </div>
+                <div class="event-details">
+                    <div class="event-date">Domenica 9 Agosto</div>
+                    <div class="event-name">Festa dell'Anguilla</div>
+                    <div class="event-location">
+                        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Cornacervina
+                    </div>
+                    <div class="event-time">dalle 21:30 — Best Blues Rock</div>
+                </div>
+            </div>
+
+            <!-- Per aggiungere altri eventi, copia il blocco event-card qui sotto -->
+            <!--
+            <div class="event-card" style="margin-top: 2rem;">
+                <div class="event-image">
+                    <img src="images/NOME-FOTO.jpg" alt="Descrizione evento">
+                </div>
+                <div class="event-details">
+                    <div class="event-date">DATA EVENTO</div>
+                    <div class="event-name">NOME EVENTO</div>
+                    <div class="event-location">
+                        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        LUOGO
+                    </div>
+                    <div class="event-time">ORARIO</div>
+                </div>
+            </div>
+            -->
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════ VIDEO ═══════ -->
+    <section class="video-section" id="video">
+        <h2 class="video-title reveal">Video</h2>
+
+        <!-- SLOT VIDEO 1 — Sostituisci il blocco qui sotto con un iframe YouTube -->
+        <!-- Esempio: <iframe width="100%" style="aspect-ratio:16/9;border-radius:12px;" src="https://www.youtube.com/embed/ID_VIDEO" frameborder="0" allowfullscreen></iframe> -->
+        <div class="video-slot reveal">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <p>Aggiungi qui il tuo primo video YouTube</p>
+            <p class="video-slot-hint">Sostituisci questo blocco con un iframe YouTube</p>
+        </div>
+
+        <!-- SLOT VIDEO 2 -->
+        <div class="video-slot reveal">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <p>Aggiungi qui un altro video</p>
+            <p class="video-slot-hint">Sostituisci questo blocco con un iframe YouTube</p>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════ GALLERIA FOTO ═══════ -->
+    <section class="gallery-section" id="foto">
+        <h2 class="gallery-title reveal">Galleria</h2>
+        <div class="gallery-grid">
+            <!-- Sostituisci ogni gallery-slot con: <img src="images/TUA-FOTO.jpg" alt="..." style="width:100%;height:100%;object-fit:cover;border-radius:8px;"> -->
+            <div class="gallery-slot reveal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p>Foto 1</p>
+            </div>
+            <div class="gallery-slot reveal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p>Foto 2</p>
+            </div>
+            <div class="gallery-slot reveal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p>Foto 3</p>
+            </div>
+            <div class="gallery-slot reveal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p>Foto 4</p>
+            </div>
+            <div class="gallery-slot reveal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p>Foto 5</p>
+            </div>
+            <div class="gallery-slot reveal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p>Foto 6</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ CONTATTI ═══════ -->
+    <section class="contatti" id="contatti">
+        <h2 class="contatti-title reveal">Contatti & Booking</h2>
+        <p class="reveal">
+            Per concerti, eventi e collaborazioni<br>
+            📧 <a href="mailto:zgband@email.com">zgband@email.com</a><br>
+            📱 +39 XXX XXX XXXX
+        </p>
+        <div class="social-links reveal">
+            <!-- Facebook -->
+            <a href="#" aria-label="Facebook">
+                <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <!-- Instagram -->
+            <a href="#" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <!-- YouTube -->
+            <a href="#" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 ZG Band — Blues Rock dal Delta del Po
+    </footer>
+
+    <!-- ═══════ SCROLL REVEAL SCRIPT ═══════ -->
+    <script>
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        reveals.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
